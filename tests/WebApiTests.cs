@@ -34,8 +34,31 @@ namespace tests
             var results = Assert.IsType<OkObjectResult>(controller.Get().Result);
             Assert.Equal(200, results.StatusCode);
 
-            var list = new List<TvShow>(Assert.IsType<List<TvShow>>(results.Value));
+            var list = new List<TvShow>((IEnumerable<TvShow>)results.Value);
             Assert.Equal(2, list.Count);
+        }
+
+        [Fact]
+        public void TestApiWithPaginationWhenMoreThanTenTvShowsAndNoPageParameter()
+        {
+            var tvshows = new List<TvShow>();
+            for (int i = 1; i < 25; i++)
+            {
+                tvshows.Add(new TvShow() { Id = i, Name = "Tv Show" + i });
+            }
+            var mockRepo = new Mock<ITvShowRepository>();
+            mockRepo.Setup(repo => repo.Get()).Returns(tvshows);
+            
+            var controller = new TvShowController(mockRepo.Object);
+
+            var results = Assert.IsType<OkObjectResult>(controller.Get().Result);
+            Assert.Equal(200, results.StatusCode);
+
+            var list = new List<TvShow>((IEnumerable<TvShow>)results.Value);
+            Assert.Equal(10, list.Count);
+
+            Assert.Equal(1, list[0].Id);
+            Assert.Equal(10, list[9].Id);
         }
     }
 }
