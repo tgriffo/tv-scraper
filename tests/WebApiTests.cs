@@ -41,11 +41,7 @@ namespace tests
         [Fact]
         public void TestApiWithPaginationWhenMoreThanTenTvShowsAndNoPageParameter()
         {
-            var tvshows = new List<TvShow>();
-            for (int i = 1; i < 25; i++)
-            {
-                tvshows.Add(new TvShow() { Id = i, Name = "Tv Show" + i });
-            }
+            var tvshows = GetMockedListOfTvShows(25);
             var mockRepo = new Mock<ITvShowRepository>();
             mockRepo.Setup(repo => repo.Get()).Returns(tvshows);
             
@@ -59,6 +55,36 @@ namespace tests
 
             Assert.Equal(1, list[0].Id);
             Assert.Equal(10, list[9].Id);
+        }
+
+        [Fact]
+        public void TestApiWithPaginationWhenMoreThanTenTvShowsPageOneEqualsNoPageParameter()
+        {
+            var tvshows = GetMockedListOfTvShows(25);
+            var mockRepo = new Mock<ITvShowRepository>();
+            mockRepo.Setup(repo => repo.Get()).Returns(tvshows);
+            
+            var controller = new TvShowController(mockRepo.Object);
+
+            var resultsNoPageParameter = Assert.IsType<OkObjectResult>(controller.Get().Result);
+            Assert.Equal(200, resultsNoPageParameter.StatusCode);
+
+            var resultsPageOne = Assert.IsType<OkObjectResult>(controller.Get(1).Result);
+            Assert.Equal(200, resultsPageOne.StatusCode);
+
+            var listNoPageParameter = new List<TvShow>((IEnumerable<TvShow>)resultsNoPageParameter.Value);
+            var listPageOne = new List<TvShow>((IEnumerable<TvShow>)resultsPageOne.Value);
+            Assert.Equal(listNoPageParameter, listPageOne);
+        }
+
+        private List<TvShow> GetMockedListOfTvShows(int count)
+        {
+            var tvshows = new List<TvShow>();
+            for (int i = 1; i < count; i++)
+            {
+                tvshows.Add(new TvShow() { Id = i, Name = "Tv Show" + i });
+            }
+            return tvshows;
         }
     }
 }

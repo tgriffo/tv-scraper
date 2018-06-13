@@ -24,6 +24,13 @@ namespace api.Controllers
         {
             return Ok(GetWithPagination(0));
         }
+        // GET api/tv-shows
+        [HttpGet("/{pageNumber}")]
+        public ActionResult<IEnumerable<TvShow>> Get(int pageNumber)
+        {
+            var pageIndex = pageNumber - 1;
+            return Ok(GetWithPagination(pageIndex));
+        }
 
         private IEnumerable<TvShow> GetWithPagination(int pageIndex)
         {
