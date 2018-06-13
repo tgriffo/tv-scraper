@@ -10,11 +10,17 @@ namespace api.Controllers
     [ApiController]
     public class TvShowController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        private ITvShowRepository _tvShowRepository;
+        public TvShowController(ITvShowRepository tvShowRepository)
         {
-            return new string[] { "value1", "value2" };
+            _tvShowRepository = tvShowRepository;
+        }
+
+        // GET api/tv-shows
+        [HttpGet]
+        public ActionResult<IEnumerable<TvShow>> Get()
+        {
+            return Ok(_tvShowRepository.Get());
         }
     }
 }
