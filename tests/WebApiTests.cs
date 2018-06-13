@@ -77,10 +77,29 @@ namespace tests
             Assert.Equal(listNoPageParameter, listPageOne);
         }
 
+        [Fact]
+        public void TestApiWithPaginationOnLastPageWithElements()
+        {
+            var tvshows = GetMockedListOfTvShows(25);
+            var mockRepo = new Mock<ITvShowRepository>();
+            mockRepo.Setup(repo => repo.Get()).Returns(tvshows);
+            
+            var controller = new TvShowController(mockRepo.Object);
+
+            var results = Assert.IsType<OkObjectResult>(controller.Get(3).Result);
+            Assert.Equal(200, results.StatusCode);
+
+            var list = new List<TvShow>((IEnumerable<TvShow>)results.Value);
+            Assert.Equal(5, list.Count);
+
+            Assert.Equal(21, list[0].Id);
+            Assert.Equal(25, list[4].Id);
+        }
+        
         private List<TvShow> GetMockedListOfTvShows(int count)
         {
             var tvshows = new List<TvShow>();
-            for (int i = 1; i < count; i++)
+            for (int i = 1; i <= count; i++)
             {
                 tvshows.Add(new TvShow() { Id = i, Name = "Tv Show" + i });
             }
