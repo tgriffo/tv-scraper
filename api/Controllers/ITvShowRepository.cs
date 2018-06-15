@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,7 @@ namespace api.Controllers
 
         public IEnumerable<TvShow> Get()
         {
-            throw new NotImplementedException();
+            return _context.TvShows.AsEnumerable();
         }
     }
 
