@@ -20,7 +20,13 @@ namespace api.Controllers
 
         public IEnumerable<TvShow> Get()
         {
-            return _context.TvShows.AsEnumerable();
+            var tvShows = _context.TvShows
+                .Include(t => t.Cast)
+                .OrderBy(t => t.Id)
+                .ToList();
+            
+            tvShows.ForEach(t => t.Cast = t.Cast.OrderByDescending(c => c.Birthday).ToList());
+            return tvShows;
         }
     }
 
