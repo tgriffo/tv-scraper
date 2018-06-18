@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace api.Controllers
+namespace datastore.model
 {
     public class CastMember
     {

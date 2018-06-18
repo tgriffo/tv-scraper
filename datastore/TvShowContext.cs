@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using datastore.model;
 
 namespace api.Controllers
 {

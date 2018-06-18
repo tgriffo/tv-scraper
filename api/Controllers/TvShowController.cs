@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using datastore.model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers

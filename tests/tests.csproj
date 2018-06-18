@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\api\api.csproj" />
     <ProjectReference Include="..\job\job.csproj" />
+    <ProjectReference Include="..\datastore\datastore.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace api.Controllers
+namespace datastore.model
 {
     public class TvShow
     {
