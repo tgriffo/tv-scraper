@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using api.Controllers;
 using Moq;
 using Microsoft.AspNetCore.Mvc;
+using datastore.model;
 
 namespace tests
 {

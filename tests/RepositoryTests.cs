@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;
 using api.Controllers;
+using datastore.model;
 
 namespace tests
 {
