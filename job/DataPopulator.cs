@@ -7,6 +7,14 @@ using datastore.model;
 
 namespace job
 {
+    public class PopulateResult
+    {
+        public int Added { get; set; }
+        public int Changed { get; set; }
+        public bool Successful { get; set; }
+        public string Error { get; set; }
+    }
+
     public class DataPopulator
     {
         private ITvMazeApiRepository _mazeApiRepository;
@@ -18,25 +26,38 @@ namespace job
             _db = db;
         }
 
-        public string PopulateTvShows()
+        public PopulateResult PopulateTvShows()
         {
-            var tvShowsMazeApi = _mazeApiRepository.GetTvShows();
-            
-            foreach (var tvShow in tvShowsMazeApi.Select(t => new TvShow() { Id = t.Id, Name = t.Name }))
+            var result = new PopulateResult() { Successful = true };
+
+            try
             {
-                var existingTvShow = _db.TvShows.Find(tvShow.Id);
-                if (existingTvShow == null)
+                var tvShowsMazeApi = _mazeApiRepository.GetTvShows();
+                foreach (var tvShow in tvShowsMazeApi.Select(t => new TvShow() { Id = t.Id, Name = t.Name }))
                 {
-                    _db.TvShows.Add(tvShow);
+                    var existingTvShow = _db.TvShows.Find(tvShow.Id);
+                    if (existingTvShow == null)
+                    {
+                        result.Added++;
+                        _db.TvShows.Add(tvShow);
+                    }
+                    else
+                    {
+                        result.Changed++;
+                        existingTvShow.Name = tvShow.Name;
+                    }
                 }
-                else
-                {
-                    existingTvShow.Name = tvShow.Name;
-                }
+                
+                _db.SaveChanges();
             }
-            
-            _db.SaveChanges();
-            return "success";
+            catch (TvMazeApiException e)
+            {
+                result.Added = 0;
+                result.Changed = 0;
+                result.Successful = false;
+                result.Error = e.Message;
+            }
+            return result;
         }
     }
 }
