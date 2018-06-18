@@ -110,7 +110,7 @@ namespace tests
             Assert.Equal(200, results.StatusCode);
 
             var list = new List<TvShow>((IEnumerable<TvShow>)results.Value);
-            Assert.Equal(0, list.Count);
+            Assert.Empty(list);
         }
 
         private List<TvShow> GetMockedListOfTvShows(int count)
