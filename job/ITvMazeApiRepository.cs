@@ -9,6 +9,14 @@ namespace job
         IEnumerable<TvMazeTvShow> GetTvShows();
     }
 
+    public class TvMazeApiRepository : ITvMazeApiRepository
+    {
+        public IEnumerable<TvMazeTvShow> GetTvShows()
+        {
+            return new List<TvMazeTvShow>() { new TvMazeTvShow() };
+        }
+    }
+
     [DataContract(Name="shows")]
     public class TvMazeTvShow
     {

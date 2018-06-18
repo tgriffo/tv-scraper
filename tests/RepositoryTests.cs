@@ -6,6 +6,7 @@ using Moq;
 using Xunit;
 using api.Controllers;
 using datastore.model;
+using datastore;
 
 namespace tests
 {

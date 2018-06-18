@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using datastore.model;
 
-namespace api.Controllers
+namespace datastore
 {
     public class TvShowContext : DbContext
     {
